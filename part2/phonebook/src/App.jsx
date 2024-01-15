@@ -8,13 +8,26 @@ function App() {
   ])
   const [newName, setNewName] = useState('')
 
+  // helper function
+  const isDuplicatePerson = (newPerson) => {
+    let currentNames = []
+    for (const person of persons) {
+      currentNames.push(person.name)
+    }
+    return (currentNames.includes(newPerson))
+  }
+
   // event handlers
   const addPerson = (event) => {
     event.preventDefault()
-    const personObject = {
-      name: newName
+    if (isDuplicatePerson(newName)) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      const personObject = {
+        name: newName
+      }
+      setPersons(persons.concat(personObject))
     }
-    setPersons(persons.concat(personObject))
     setNewName('')
   }
   const handlePersonChange = (event) => {
