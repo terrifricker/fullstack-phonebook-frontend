@@ -6,8 +6,9 @@ function App() {
   // state
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
-  // fetch data
+  // fetch initial data
   useEffect(() => {
     console.log('effect')
     axios
@@ -34,15 +35,21 @@ function App() {
       alert(`${newName} is already added to phonebook`)
     } else {
       const personObject = {
-        name: newName
+        name: newName,
+        number: newNumber
       }
       setPersons(persons.concat(personObject))
     }
     setNewName('')
+    setNewNumber('')
   }
   const handlePersonChange = (event) => {
     setNewName(event.target.value)
   }
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
+  }
+  
   return (
     <div>
       <h2>Phonebook</h2>
@@ -52,6 +59,12 @@ function App() {
           <input
             value={newName}
             onChange={handlePersonChange} />
+        </div>
+        <div>
+          number:
+          <input
+            value={newNumber}
+            onChange={handleNumberChange} />
         </div>
         <div>
           <button type="submit">add</button>
