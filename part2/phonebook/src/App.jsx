@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import Person from './components/Person'
+
+import Filter from './components/Filter'
+import AddForm from './components/AddForm'
+import DisplayPersons from './components/DisplayPersons'
+
 
 function App() {
   // state
   const [persons, setPersons] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [searchTerm, setSearchTerm] = useState('')
   
   // fetch initial data
   useEffect(() => {
@@ -19,13 +23,6 @@ function App() {
   }, [])
 
   // helper functions
-  const isDuplicatePerson = (newPerson) => {
-    let currentNames = []
-    for (const person of persons) {
-      currentNames.push(person.name)
-    }
-    return (currentNames.includes(newPerson))
-  }
   const personsToDisplay = () => {
     if (!searchTerm) {
       return persons
@@ -34,8 +31,13 @@ function App() {
         person.name.toLowerCase().includes(searchTerm.toLowerCase()))
     }
   }
-
-  // event handlers
+  const isDuplicatePerson = (newPerson) => {
+    let currentNames = []
+    for (const person of persons) {
+      currentNames.push(person.name)
+    }
+    return (currentNames.includes(newPerson))
+  }
   const addPerson = (event) => {
     event.preventDefault()
     if (isDuplicatePerson(newName)) {
@@ -50,11 +52,13 @@ function App() {
     setNewName('')
     setNewNumber('')
   }
+
+  // event handlers
   const handlePersonChange = (event) => {
     setNewName(event.target.value)
   }
   const handleNumberChange = (event) => {
-    setNewNumber(event.target.value)
+      setNewNumber(event.target.value)
   }
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value)
@@ -62,36 +66,21 @@ function App() {
 
   return (
     <div>
-      <h2>Phonebook</h2>
-      <div>
-        filter shown with
-        <input
-          value={searchTerm}
-          onChange={handleSearchChange} />
-      </div>
-      <form onSubmit={addPerson}>
-        <h2>Add a new</h2>
-        <div>
-          name:
-          <input
-            value={newName}
-            onChange={handlePersonChange} />
-        </div>
-        <div>
-          number:
-          <input
-            value={newNumber}
-            onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {personsToDisplay().map(person =>
-          <Person key={person.id} person={person} />)}
-      </ul>
+      <h1>Phonebook</h1>
+      <Filter
+        searchTerm={searchTerm}
+        handleSearchChange={handleSearchChange}
+      />
+      <AddForm
+        addPerson={addPerson}
+        newName={newName}
+        handlePersonChange={handlePersonChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
+      <DisplayPersons
+        personsToDisplay={personsToDisplay()}
+      />
     </div>
   )
 }
