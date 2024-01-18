@@ -56,6 +56,17 @@ function App() {
     setNewName('')
     setNewNumber('')
   }
+  const removePerson = (id) => {
+    if (window.confirm(`Delete ${persons.filter(person => 
+        person.id === id)[0].name}?`)) {
+      personsService
+      .remove(id)
+      .then(() => 
+        personsService
+        .getAll()
+        .then(response => setPersons(response)))
+    }
+  }
 
   // event handlers
   const handlePersonChange = (event) => {
@@ -84,6 +95,7 @@ function App() {
       />
       <DisplayPersons
         personsToDisplay={personsToDisplay()}
+        removePerson={removePerson}
       />
     </div>
   )
