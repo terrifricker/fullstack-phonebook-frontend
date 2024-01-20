@@ -31,17 +31,23 @@ function App() {
         person.name.toLowerCase().includes(searchTerm.toLowerCase()))
     }
   }
-  const isDuplicatePerson = (newPerson) => {
-    let currentNames = []
-    for (const person of persons) {
-      currentNames.push(person.name)
-    }
-    return (currentNames.includes(newPerson))
-  }
   const addPerson = (event) => {
     event.preventDefault()
-    if (isDuplicatePerson(newName)) {
-      alert(`${newName} is already added to phonebook`)
+    let existingPerson = persons.find(person => person.name === newName)
+    console.log("existing", existingPerson)
+    if (existingPerson) {
+      if (window.confirm(`${existingPerson.name} is already added to phonebook,
+        replace the old number with this new one?`)) {
+          const changedPerson = { ...existingPerson, number: newNumber}
+          console.log("new", changedPerson)
+          console.log("id", changedPerson.id)
+          personsService
+          .update(`${changedPerson.id}`, changedPerson)
+          .then(() => 
+            personsService
+            .getAll()
+            .then(response => setPersons(response)))
+      }
     } else {
       const personObject = {
         name: newName,
