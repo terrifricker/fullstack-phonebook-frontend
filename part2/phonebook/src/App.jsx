@@ -13,7 +13,8 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-  const [message, setMessage] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
   
   // fetch initial data
   useEffect(() => {
@@ -46,9 +47,9 @@ function App() {
             personsService
             .getAll()
             .then(response => setPersons(response))
-            setMessage(`${existingPerson.name}'s number has been changed to ${changedPerson.number}.`)
+            setSuccessMessage(`${existingPerson.name}'s number has been changed to ${changedPerson.number}.`)
             setTimeout(() => {
-              setMessage(null)
+              setSuccessMessage(null)
             }, 3000)
           })
       }
@@ -62,9 +63,9 @@ function App() {
       .then(response => {
         setPersons(persons.concat(response))
       })
-      setMessage(`Added ${personObject.name}`)
+      setSuccessMessage(`Added ${personObject.name}`)
       setTimeout(() => {
-        setMessage(null)
+        setSuccessMessage(null)
       }, 3000)
     }
     setNewName('')
@@ -80,9 +81,15 @@ function App() {
         personsService
         .getAll()
         .then(response => setPersons(response))
-        setMessage(`Removed ${personToRemove}`)
+        setSuccessMessage(`Removed ${personToRemove}`)
         setTimeout(() => {
-          setMessage(null)
+          setSuccessMessage(null)
+        }, 3000)
+      })
+      .catch(() => {
+        setErrorMessage(`${personToRemove} has already been deleted.`)
+        setTimeout(() => {
+          setErrorMessage(null)
         }, 3000)
       })
     }
@@ -103,7 +110,8 @@ function App() {
     <div>
       <h1>Phonebook</h1>
       <Notification
-        message={message}
+        successMessage={successMessage}
+        errorMessage={errorMessage}
       />
       <Filter
         searchTerm={searchTerm}
