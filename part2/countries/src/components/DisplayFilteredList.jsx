@@ -1,4 +1,4 @@
-const DisplayFilteredList = ({ filteredCountries }) => {
+const DisplayFilteredList = ({ filteredCountries, showCountry }) => {
   
   const list = filteredCountries
 
@@ -17,6 +17,7 @@ const DisplayFilteredList = ({ filteredCountries }) => {
         {list.map(country =>
           <li key={country.ccn3}>
             {country.name.common}
+            <button id={country.name.common} type="button" onClick={showCountry}>Show</button>
           </li>)}
      </ul>
     )

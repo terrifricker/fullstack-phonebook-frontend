@@ -28,11 +28,9 @@ function App() {
 
   // when filteredCountries length is one, update country
   useEffect(() => {
-    if(filteredCountries) {
       if(filteredCountries.length === 1) {
         setCountry(filteredCountries[0].name.common)
       }
-    }
   }, [filteredCountries])
 
   // helper function to filter countries by search term
@@ -46,9 +44,13 @@ function App() {
     return allCountries.filter(country => country.name.common.toLowerCase().includes(searchTerm.toLowerCase()))
   }
 
-  // event handler
+  // event handlers
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value)
+  }
+  const showCountry = (event) => {
+    console.log(event.target.id)
+    setCountry(event.target.id)
   }
 
   return (
@@ -60,6 +62,7 @@ function App() {
       />
       <DisplayFilteredList
         filteredCountries={filteredCountries}
+        showCountry={showCountry}
       />
       <DisplayCountry
         country={country}
