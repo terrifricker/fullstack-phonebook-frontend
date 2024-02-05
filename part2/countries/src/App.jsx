@@ -21,10 +21,21 @@ function App() {
 
   // whenever searchTerm is updated, update filteredCountries
   useEffect ( () => {
+    // helper function to filter countries by search term
+    const filterCountries = () => {
+      if(!allCountries) {
+        return []
+      }
+      if(!searchTerm) {
+        return []
+      }
+      return allCountries.filter(country => country.name.common.toLowerCase().includes(searchTerm.toLowerCase()))
+    }
+
     if(searchTerm) {
       setFilteredCountries(filterCountries())
     }
-  }, [searchTerm])
+  }, [allCountries, searchTerm])
 
   // when filteredCountries length is one, update country
   useEffect(() => {
@@ -32,17 +43,6 @@ function App() {
         setCountry(filteredCountries[0].name.common)
       }
   }, [filteredCountries])
-
-  // helper function to filter countries by search term
-  const filterCountries = () => {
-    if(!allCountries) {
-      return []
-    }
-    if(!searchTerm) {
-      return []
-    }
-    return allCountries.filter(country => country.name.common.toLowerCase().includes(searchTerm.toLowerCase()))
-  }
 
   // event handlers
   const handleSearchChange = (event) => {

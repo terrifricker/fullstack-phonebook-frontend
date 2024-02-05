@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Weather from './Weather'
 
 const DisplayCountry = ({ country }) => {
   const [countryInfo, setCountryInfo] = useState(null);
@@ -11,12 +12,12 @@ const DisplayCountry = ({ country }) => {
         setCountryInfo(response.data);
       })
       .catch(error => {
-        console.log(error);
-      });
-  }, [country]);
+        console.log(error)
+      })
+  }, [country])
 
   if (!countryInfo) {
-    return null;
+    return null
   }
 
   return (
@@ -31,8 +32,11 @@ const DisplayCountry = ({ country }) => {
         ))}
       </ul>
       <p>{countryInfo.flag}</p>
+      <Weather 
+        countryInfo={countryInfo}
+      />
     </>
-  );
-};
+  )
+}
 
 export default DisplayCountry
